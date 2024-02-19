@@ -5,7 +5,7 @@ const SearchInput = () => {
   const [search, setSearch] = useState("");
   console.log(search);
   return (
-    <div className="m-auto w-1/2 mt-2">
+    <div className="m-auto w-1/2 mt-5 flex justify-center">
       <input
         type="text"
         className="outline-none border-2 w-[300px] h-[40px] p-6 rounded-md focus:ring-green-200"

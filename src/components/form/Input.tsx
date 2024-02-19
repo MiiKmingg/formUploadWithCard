@@ -31,7 +31,6 @@ const Input: React.FC<InputProps> = ({
         </label>
       )}
 
-      {/* <p className='text-black text-xl' >username</p> */}
       <input
         type={type}
         name={name}
