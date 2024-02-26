@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 const SearchInput = () => {
   const [search, setSearch] = useState("");
-  console.log(search);
+
   return (
     <div className="m-auto w-1/2 mt-5 flex justify-center">
       <input

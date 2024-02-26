@@ -44,7 +44,7 @@ const Card: React.FC<CardProps> = ({
             src={image}
             width={90}
             height={90}
-            className="border rounded-xl"
+            className="border rounded-full"
             alt="User's Photo"
           ></Image>
         </div>

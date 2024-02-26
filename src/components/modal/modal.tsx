@@ -4,7 +4,7 @@ import { Button } from "../button";
 import FloatingButton from "@/components/button/FloatingButton";
 interface ModalProps {
   children?: ReactNode;
-  selectCard: string;
+  selectCard?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({ children, selectCard }) => {
@@ -21,8 +21,6 @@ const Modal: React.FC<ModalProps> = ({ children, selectCard }) => {
       </FloatingButton>
       {isShowModal && (
         <>
-
-        
           <motion.div
             initial={{ x: "100%" }}
             animate={{

@@ -1,10 +1,8 @@
 import { User } from "@/app/page";
 import React, { useState } from "react";
-import { userSchema } from "@/components/validations/schema";
+import { userSchema } from "@/validations/schema";
 
-// 1. UseEffect = when to use it, what is side effect, use effect with no dependency, with dependencies
-// 2. Context API= What is Context API? When to use? How to use it?
-
+ 
 interface FormAddProps {
   addNewUser: (user: User) => void;
 }
@@ -17,7 +15,7 @@ const FormAdd = ({ addNewUser }: FormAddProps) => {
   });
   const [errors, setErrors] = useState({
     username: "",
-    profile: "asdfghjkl",
+    profile: "",
   });
 
   const validateForm = async (name, value) => {
