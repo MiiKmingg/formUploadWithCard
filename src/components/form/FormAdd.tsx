@@ -1,8 +1,7 @@
 import { User } from "@/app/page";
-import React, { useState } from "react";
 import { userSchema } from "@/validations/schema";
+import React, { useState } from "react";
 
- 
 interface FormAddProps {
   addNewUser: (user: User) => void;
 }
@@ -46,7 +45,9 @@ const FormAdd = ({ addNewUser }: FormAddProps) => {
       });
     } catch (error) {
       console.log("error", error);
-      const fieldErrors = {};
+      const fieldErrors = {
+        username: ""
+      };
 
       // Error From Yup
       error.inner.forEach((err) => {

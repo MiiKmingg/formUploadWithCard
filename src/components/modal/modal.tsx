@@ -1,14 +1,16 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../button";
 import FloatingButton from "@/components/button/FloatingButton";
+import { UserContext } from "@/Context/UserContext";
 interface ModalProps {
   children?: ReactNode;
   selectCard?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, selectCard }) => {
+const Modal: React.FC<ModalProps> = ({ children }) => {
   const [isShowModal, setIsShowModal] = useState(false);
+  const { selectCard } = useContext(UserContext);
 
   return (
     <>
@@ -30,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({ children, selectCard }) => {
               x: "100%",
             }}
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            className="fixed bg-gray-100 text-white shadow-lg top-0 right-0 w-full max-w-xl h-screen p-5"
+            className="fixed bg-gray-500 text-white shadow-lg top-0 right-0 w-full max-w-xl h-screen p-5"
           >
             <button
               onClick={() => setIsShowModal((sideBar) => !sideBar)}

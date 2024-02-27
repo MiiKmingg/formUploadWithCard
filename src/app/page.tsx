@@ -13,8 +13,6 @@ export default function Home() {
   // const { users, setUsers } = useContext(UserContext);
   // const [selectCard, setSelectCard] = useState("");
 
-  // console.log("users", users);
-
   // const selectedUser = users.filter((user) => {
   //   if (user.id === selectCard) {
   //     return user;
@@ -28,25 +26,19 @@ export default function Home() {
 
   return (
     <UserProvider>
-      <div className="inline-block items-center justify-center mx-auto w-full">
-        <SearchInput></SearchInput>
-        <CardList />
-        <Modal >
-          {/* {selectedUser.length > 0 ? (
-            <>
-              <FormUpdate
-                selectedUser={selectedUser[0]}
-                updateUser={setUsers}
-              />
-            </>
-          ) : (
-            <>
-              <ValidationForm addNewUser={setUsers} />
-            </>
-          )} */}
-          <ValidationForm></ValidationForm>
-        </Modal>
-      </div>
+      <MyComponent />
     </UserProvider>
   );
 }
+
+const MyComponent = () => {
+  const { selectCard } = useContext(UserContext);
+
+  return (
+    <div className="inline-block items-center justify-center mx-auto w-full">
+      <SearchInput></SearchInput>
+      <CardList />
+      <Modal>{selectCard ? <FormUpdate /> : <ValidationForm />}</Modal>
+    </div>
+  );
+};

@@ -1,37 +1,27 @@
-import { User } from "@/app/page";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { userSchema } from "@/validations/schema";
 import { ErrorsMessages, InputForm, Label } from ".";
 import { Input } from ".";
-import { UserContext } from "@/Context/UserContext";
+import { UserContext, UserModel } from "@/Context/UserContext";
+import { validate } from "@/validations/validations";
 // 1. UseEffect = when to use it, what is side effect, use effect with no dependency, with dependencies
 // 2. Context API= What is Context API? When to use? How to use it?
 
 interface FormAddProps {
-  addNewUser: (user: User) => void;
+  addNewUser: (user: UserModel) => void;
 }
 
 const ValidationForm = () => {
-  const { handleFormAdd } = useContext(UserContext);
+  const { addNewUser } = useContext(UserContext);
   const [user, setUser] = useState({
-    id: "",
     username: "",
     profile: null,
   });
+
   const [errors, setErrors] = useState({
     username: "",
     profile: "",
   });
-
-  const validateForm = async (name, value) => {
-    try {
-      await userSchema.validateAt(name, { [name]: value });
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    } catch (error) {
-      console.log("Error", error);
-      setErrors((prev) => ({ ...prev, [name]: error.message }));
-    }
-  };
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,23 +32,15 @@ const ValidationForm = () => {
     }
 
     try {
-      await userSchema.validate(user, { abortEarly: false });
-      handleFormAdd(user);
-    } catch (error) {
-      console.log("error", error);
-      const fieldErrors = {};
-
-      // Error From Yup
-      error.inner.forEach((err) => {
-        fieldErrors[err.path] = err.message;
-      });
-      setErrors(fieldErrors);
-      return;
+      await validate(userSchema, user);
+      addNewUser(user);
+    } catch (error: any) {
+      setErrors(error);
     }
   };
 
   // Get the value from the input fields:
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prevUser) => {
       return {
@@ -66,16 +48,22 @@ const ValidationForm = () => {
         [name]: value,
       };
     });
-    validateForm(name, value);
+    try {
+      await validate(userSchema, user);
+    } catch (error) {
+      setErrors(error);
+    }
   };
 
-  const handleOnUploadFile = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleOnUploadFile = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLFormElement>
+  ) => {
     const file = e.target.files[0];
 
     validateForm(e.target.name, file);
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setUser((prevUser) => {
+      setUser((prevUser: any) => {
         return {
           ...prevUser,
           profile: imageUrl,
@@ -97,7 +85,7 @@ const ValidationForm = () => {
         placeholder="username"
         onChange={handleOnChange}
         label="username"
-        error={errors.username}
+        error={errors?.username}
       />
 
       <Input
@@ -107,7 +95,7 @@ const ValidationForm = () => {
         placeholder="profile"
         onChange={handleOnUploadFile}
         label="profile"
-        error={errors.profile}
+        error={errors?.profile}
       />
 
       <button

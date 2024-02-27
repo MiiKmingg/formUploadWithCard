@@ -1,13 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-import { User } from "@/app/page";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import { UserContext, UserModel } from "@/Context/UserContext";
+import React, { useContext, useState } from "react";
 
-interface FormAddProps {
-  updateUser: Dispatch<SetStateAction<User[]>>;
-  selectedUser: User;
-}
+const FormUpdate = () => {
+  const { users, selectCard, updateUser } = useContext(UserContext);
 
-const FormUpdate: React.FC<FormAddProps> = ({ selectedUser, updateUser }) => {
+  const selectedUser = users.find(
+    (user) => user.id === selectCard
+  ) as UserModel;
+
   const [user, setUser] = useState({
     username: selectedUser.username,
     profile: selectedUser.profile,
@@ -15,17 +16,7 @@ const FormUpdate: React.FC<FormAddProps> = ({ selectedUser, updateUser }) => {
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    updateUser((prevUsers) => {
-      return prevUsers.map((prevUser) => {
-        if (prevUser.id === selectedUser.id) {
-          return {
-            ...prevUser,
-            ...user,
-          };
-        }
-        return prevUser;
-      });
-    });
+    updateUser(user, selectCard);
   };
 
   // Get the value from the input fields:
@@ -38,7 +29,7 @@ const FormUpdate: React.FC<FormAddProps> = ({ selectedUser, updateUser }) => {
     });
   };
 
-  const handleOnUploadFile = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleOnUploadFile = (e: React.ChangeEvent<HTMLInputElement | HTMLFormElement>) => {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);

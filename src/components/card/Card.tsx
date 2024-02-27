@@ -1,7 +1,8 @@
 "use client";
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useContext, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { UserContext } from "@/Context/UserContext";
 
 interface CardProps {
   id: string;
@@ -12,29 +13,26 @@ interface CardProps {
   onDeleteCard: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Card: React.FC<CardProps> = ({
-  id,
-  name,
-  image,
-  selectCard,
-  onSelectCard,
-  onDeleteCard,
-}: CardProps) => {
+const Card: React.FC<CardProps> = ({ id, name, image }: CardProps) => {
+  const { selectCard, setSelectCard, handleDeleteUser } =
+    useContext(UserContext);
+
+  console.log("selected", selectCard);
   return (
     //Card
     <div
       onClick={() => {
         // Unselect Card
         if (selectCard === id) {
-          onSelectCard("");
+          setSelectCard("");
         } else {
-          // Select Card
-          onSelectCard(id);
+          setSelectCard(id);
         }
+        // Select Card
       }}
       className={
         selectCard === id
-          ? "flex justify-between items-start w-[420px] bg-gray-200 text-white  m-auto mt-5 p-2 border border-[#d6c2e7] rounded-lg shadow-xl "
+          ? "flex justify-between items-start w-[420px] bg-pink-200 text-white  m-auto mt-5 p-2 border border-[#d6c2e7] rounded-lg shadow-xl "
           : "flex justify-between items-start w-[420px]   m-auto mt-5 p-2 border border-[#d6c2e7] rounded-lg hover:bg-gray-200 shadow-xl"
       }
     >
@@ -64,7 +62,7 @@ const Card: React.FC<CardProps> = ({
       <div>
         <button
           onClick={(e) => {
-            onDeleteCard(id);
+            handleDeleteUser(id);
             e.stopPropagation();
           }}
         >
